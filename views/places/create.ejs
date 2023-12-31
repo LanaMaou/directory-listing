@@ -1,0 +1,73 @@
+<% layout('layouts/app') %>
+
+<h1 class="text-center">Add Place</h1>
+<div class="col-6 offset-3">
+  <form action="/places" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        name="place[title]"
+        id="title"
+        class="form-control"
+        required
+      />
+      <div class="invalid-feedback">Please input title!</div>
+      <div class="valid-feedback">Looks Good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        name="place[location]"
+        id="location"
+        class="form-control"
+        required
+      />
+      <div class="invalid-feedback">Please input Location!</div>
+      <div class="valid-feedback">Looks Good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        type="text"
+        name="place[description]"
+        id="description"
+        class="form-control"
+        required
+      ></textarea>
+      <div class="invalid-feedback">Please input Description!</div>
+      <div class="valid-feedback">Looks Good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input
+        type="text"
+        name="place[price]"
+        id="price"
+        class="form-control"
+        required
+      />
+      <div class="invalid-feedback">Please input Price!</div>
+      <div class="valid-feedback">Looks Good!</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Image Url</label>
+      <input
+        type="text"
+        name="place[image]"
+        id="image"
+        class="form-control"
+        required
+      />
+      <div class="invalid-feedback">Please input Image!</div>
+      <div class="valid-feedback">Looks Good!</div>
+    </div>
+
+    <button type="submit" class="btn btn-success mb-3">Save</button>
+  </form>
+</div>
