@@ -76,7 +76,10 @@
       <div class="card-body">
         <h5 class="card-title">Rating: <%= review.rating %></h5>
         <p class="card-text"><%= review.body %></p>
-        <% if (currentUser && place.author.equals(currentUser._id)) { %>
+        <p class="card-text my-0 float-end">
+          Review by <span class="fw-bold"><%= review.author.username %></span>
+        </p>
+        <% if (currentUser && review.author.equals(currentUser._id)) { %>
         <form
           action="/places/<%= place._id %>/reviews/<%= review._id %>?_method=DELETE"
           method="POST"
