@@ -1,3 +1,87 @@
-<% layout('layouts/app.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BestPoint - Jelajahi Bagian dari Dunia</title>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="#">BestPoints</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/places">Places</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/places/create">New Place</a>
+              </li>
+            </ul>
 
-<h1>BestPoint</h1>
+            <ul class="navbar-nav">
+              <% if (!currentUser) { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+              <% } else { %>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href=""
+                  onclick="
+                      event.preventDefault();
+                      document.getElementById('logout-form').submit();
+                      "
+                  >Logout</a
+                >
+                <form
+                  action="/logout"
+                  method="POST"
+                  style="display: none"
+                  id="logout-form"
+                ></form>
+              </li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero-section">
+      <div class="container">
+        <h1>BestPoint</h1>
+        <h4 class="subtitle">
+          Discover the Best Points for Your Perpect Vacation
+        </h4>
+
+        <div class="mt-4 btn-group-center">
+          <a href="/places" class="btn btn-outline-light">Jelajahi Tempat</a>
+        </div>
+      </div>
+    </section>
+
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

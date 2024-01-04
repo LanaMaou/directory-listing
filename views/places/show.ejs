@@ -2,10 +2,13 @@
 <link rel="stylesheet" href="/css/stars.css" />
 
 <div class="row mb-5">
+  
   <div class="col-6">
     <div class="card">
       <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner">
+          <% if (place.images.length) { %>
+          
           <% place.images.forEach((image, index) => { %>
           <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
             <img
@@ -14,7 +17,14 @@
               alt="<%= place.title %>"
             />
           </div>
-          <% }) %>
+          <% }) %> 
+          <% } else { %>
+          <img
+            src="https://unsplash.com/collections/2470411/1280x720"
+            alt="<%= place.title %>"
+            class="d-block w-100"
+          />
+          <% } %>
         </div>
         <% if (place.images.length > 1) { %>
         <button
@@ -66,6 +76,10 @@
   </div>
 
   <div class="col-6">
+    <div
+      style="width: 640px; height: 480px; margin-bottom: 5%;"
+      id="mapContainer"
+    ></div>
     <% if (currentUser) { %>
     <h3>Send a review</h3>
     <form
@@ -130,7 +144,9 @@
       </div>
       <button type="submit" class="btn btn-success">Submit</button>
     </form>
-    <% } %> <% for (const review of place.reviews) { %>
+    <% } %> 
+    
+    <% for (const review of place.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
         <p class="starability-result" data-rating="<%= review.rating %>">
@@ -155,3 +171,61 @@
     <% } %>
   </div>
 </div>
+
+<script>
+  const place = <%- JSON.stringify(place) %>;
+  const placeLocation = {lng: place.geometry.coordinates[1], lat: place.geometry.coordinates[0]}
+</script>
+<script>
+  function addMarker(group, coordinates, html) {
+    const svgMarkup = `<svg width="40px" height="40px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#c30909" stroke="#c30909"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  .st0{fill:#f01919;}  </style> <g> <path class="st0" d="M256,0C159.969,0,82.109,77.859,82.109,173.906c0,100.719,80.016,163.688,123.297,238.719 C246.813,484.406,246.781,512,256,512s9.188-27.594,50.594-99.375c43.297-75.031,123.297-138,123.297-238.719 C429.891,77.859,352.031,0,256,0z M256,240.406c-36.734,0-66.516-29.781-66.516-66.5c0-36.75,29.781-66.531,66.516-66.531 s66.516,29.781,66.516,66.531C322.516,210.625,292.734,240.406,256,240.406z"></path> </g> </g></svg>`;
+
+    const icon = new H.map.Icon(svgMarkup);
+    const marker = new H.map.Marker(placeLocation, { icon });
+    marker.setData(html);
+    group.addObject(marker);
+  }
+
+  function addInfoBubble(map) {
+    const group = new H.map.Group();
+
+    map.addObject(group);
+
+    map.addEventListener(
+      "tap",
+      (evt) => {
+        const bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+          content: evt.target.getData(),
+        });
+        ui.addBubble(bubble);
+      },
+      false
+    );
+
+    addMarker(
+      group,
+      placeLocation,
+      `<div><%= place.title %></div>` + `<div><%= place.description %></div>`
+    );
+  }
+
+  const platform = new H.service.Platform({
+    apikey: "IruMv6YdSFrOkaYOXYQn7UzisYUrSXY_syeNC1RGCbo",
+  });
+
+  const defaultLayers = platform.createDefaultLayers();
+
+  const map = new H.Map(
+    document.getElementById("mapContainer"),
+    defaultLayers.vector.normal.map,
+    {
+      zoom: 10,
+      center: placeLocation,
+    }
+  );
+
+  const ui = H.ui.UI.createDefault(map, defaultLayers, "en-US");
+  const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+  addInfoBubble(map);
+</script>
