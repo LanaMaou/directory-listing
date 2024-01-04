@@ -1,4 +1,5 @@
 <% layout('layouts/app') %>
+<div id="data-container" data-place="<%= JSON.stringify(place) %>"></div>
 <link rel="stylesheet" href="/css/stars.css" />
 
 <div class="row mb-5">
@@ -173,7 +174,7 @@
 </div>
 
 <script>
-  const place = <%- JSON.stringify(place) %>;
+  const place = JSON.parse(document.getElementById("data-container").dataset.place);
   const placeLocation = {lng: place.geometry.coordinates[1], lat: place.geometry.coordinates[0]}
 </script>
 <script>
